@@ -9,7 +9,6 @@ export const actions = {
 		const nama = String(data.get('nama') ?? '').trim();
 		const email = String(data.get('email') ?? '').trim();
 		const pesan = String(data.get('pesan') ?? '').trim();
-
 		if (!nama || !email || !pesan) {
 			return fail(400, { pesan: 'Semua kolom harus diisi.' });
 		}
