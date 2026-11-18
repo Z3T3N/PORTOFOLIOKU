@@ -1,5 +1,6 @@
 import { fail } from '@sveltejs/kit';
 import { RESEND_API_KEY, RESEND_TO } from '$app/env/private';
+import { Resend } from 'resend';
 import type { Actions } from './$types';
 
 export const actions: Actions = {
@@ -22,30 +23,22 @@ export const actions: Actions = {
 			return fail(503, { message: 'Layanan email belum dikonfigurasi.' });
 		}
 
-		let response: Response;
 		try {
-			response = await fetch('https://api.resend.com/emails', {
-				method: 'POST',
-				headers: {
-					Authorization: `Bearer ${RESEND_API_KEY}`,
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({
-					from: 'Portofolio <onboarding@resend.dev>',
-					to: [RESEND_TO],
-					reply_to: email,
-					subject: `Pesan dari ${nama}`,
-					text: `${pesan}\n\n— ${nama} <${email}>`
-				})
+			const { error } = await new Resend(RESEND_API_KEY).emails.send({
+				from: 'Portofolio <onboarding@resend.dev>',
+				to: RESEND_TO,
+				replyTo: email,
+				subject: `Pesan dari ${nama}`,
+				text: `${pesan}\n\n— ${nama} <${email}>`
 			});
+
+			if (error) {
+				console.error('Resend menolak pengiriman:', error.name, error.message);
+				return fail(502, { message: 'Email gagal dikirim. Coba lagi nanti.' });
+			}
 		} catch (error) {
 			console.error('Gagal menghubungi Resend.', error);
 			return fail(502, { message: 'Gagal menghubungi layanan email. Coba lagi nanti.' });
-		}
-
-		if (!response.ok) {
-			console.error('Resend menolak pengiriman:', response.status, await response.text());
-			return fail(502, { message: 'Email gagal dikirim. Coba lagi nanti.' });
 		}
 
 		return { success: true };
