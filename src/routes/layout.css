@@ -3,32 +3,34 @@
 @import '@fontsource/ibm-plex-mono/400.css';
 @import '@fontsource/ibm-plex-mono/500.css';
 
-/* Tema gelap dikendalikan class, bukan setting OS. Tanpa baris ini, `dark:`
-   mengikuti laptop masing-masing peserta dan tombol tema tidak berpengaruh. */
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-	--bg: #fcfcfa;
-	--surface: #f4f4f1;
-	--line: #e2e2dc;
-	--ink: #12120f;
-	--muted: #6b6b62;
-	--primary: #1d3fd1;
-	--on-primary: #fcfcfa;
-	--success: #047857;
-	--danger: #b91c1c;
+	--bg: #ffffff;
+	--surface: #f8fafc;
+	--line: #e2e8f0;
+	--ink: #09090b;
+	--muted: #64748b;
+	--primary: #0284c7;
+	--on-primary: #ffffff;
+	--gold: #d97706;
+	--sky: #0ea5e9;
+	--success: #059669;
+	--danger: #dc2626;
 }
 
 .dark {
-	--bg: #0c0c0b;
-	--surface: #161615;
-	--line: #2b2b27;
-	--ink: #edece4;
-	--muted: #9c9c90;
-	--primary: #8aa4ff;
-	--on-primary: #0c0c0b;
-	--success: #6ee7a0;
-	--danger: #fb8a8a;
+	--bg: #070709;
+	--surface: #111116;
+	--line: #22222b;
+	--ink: #ffffff;
+	--muted: #94a3b8;
+	--primary: #facc15;
+	--on-primary: #070709;
+	--gold: #facc15;
+	--sky: #38bdf8;
+	--success: #34d399;
+	--danger: #f87171;
 }
 
 @theme inline {
@@ -39,9 +41,40 @@
 	--color-muted: var(--muted);
 	--color-primary: var(--primary);
 	--color-on-primary: var(--on-primary);
+	--color-gold: var(--gold);
+	--color-sky: var(--sky);
 	--color-success: var(--success);
 	--color-danger: var(--danger);
 	--font-sans: 'Geologica Variable', sans-serif;
 	--font-mono: 'IBM Plex Mono', monospace;
-	--radius-xs: 2px;
+}
+
+html {
+	scroll-behavior: smooth;
+}
+
+/* Gradasi Spesifik: Hitam - Kuning Emas - Biru Muda - Putih */
+.text-gradient-gold-sky {
+	background: linear-gradient(135deg, #09090b 0%, #d97706 40%, #0284c7 80%, #09090b 100%);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+.dark .text-gradient-gold-sky {
+	background: linear-gradient(135deg, #ffffff 0%, #facc15 35%, #38bdf8 75%, #ffffff 100%);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+.bg-gradient-gold-sky {
+	background: linear-gradient(120deg, #070709 0%, #b45309 35%, #0284c7 75%, #ffffff 100%);
+}
+
+.bg-gradient-btn {
+	background: linear-gradient(135deg, #facc15 0%, #38bdf8 100%);
+	color: #070709;
+}
+
+.bg-gradient-btn:hover {
+	background: linear-gradient(135deg, #fde047 0%, #7dd3fc 100%);
 }
