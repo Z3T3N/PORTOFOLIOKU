@@ -289,7 +289,7 @@
 						Kirimkan pesan melalui formulir di samping, atau hubungi langsung via email institusi dan pribadi. Saya akan merespon secepatnya.
 					</p>
 					<div class="pt-4 flex flex-col gap-2 font-mono text-xs text-sky">
-						<p>📧 zidnihadiramadhan@gmail.com</p>
+						<p>📧 zhadiramadhan@gmail.com</p>
 						<p>📍 Semarang, Jawa Tengah, Indonesia</p>
 					</div>
 				</div>
