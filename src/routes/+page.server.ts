@@ -1,7 +1,9 @@
 import { fail } from '@sveltejs/kit';
-import { RESEND_API_KEY, RESEND_TO } from '$app/env/private';
-import { Resend } from 'resend';
 import type { Actions } from './$types';
+import { Resend } from 'resend';
+
+// Ganti dengan API Key Resend kamu (diawali 're_...')
+const resend = new Resend('re_KODE_API_KEY_RESEND_KAMU_DISINI');
 
 export const actions: Actions = {
 	kirim: async ({ request }) => {
@@ -14,33 +16,37 @@ export const actions: Actions = {
 			return fail(400, { message: 'Semua kolom wajib diisi.' });
 		}
 
-		if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+		if (!email.includes('@')) {
 			return fail(400, { message: 'Format email tidak valid.' });
 		}
 
-		if (!RESEND_API_KEY || !RESEND_TO) {
-			console.error('Email form is missing RESEND_API_KEY or RESEND_TO.');
-			return fail(503, { message: 'Layanan email belum dikonfigurasi.' });
-		}
-
 		try {
-			const { error } = await new Resend(RESEND_API_KEY).emails.send({
-				from: 'Portofolio <onboarding@resend.dev>',
-				to: RESEND_TO,
+			const { error } = await resend.emails.send({
+				from: 'Portofolio Zidni <onboarding@resend.dev>',
+				to: ['zhadiramadhan@gmail.com'],
+				subject: `Pesan Baru dari Portofolio: ${nama}`,
 				replyTo: email,
-				subject: `Pesan dari ${nama}`,
-				text: `${pesan}\n\n— ${nama} <${email}>`
+				html: `
+					<div style="font-family: sans-serif; padding: 20px; color: #111;">
+						<h2 style="color: #d97706;">Pesan Baru dari Website Portofolio</h2>
+						<p><strong>Nama:</strong> ${nama}</p>
+						<p><strong>Email Pengirim:</strong> ${email}</p>
+						<hr style="border: 1px solid #eee; margin: 20px 0;" />
+						<p><strong>Pesan:</strong></p>
+						<p style="background: #f8fafc; padding: 15px; border-radius: 6px; line-height: 1.6;">${pesan}</p>
+					</div>
+				`
 			});
 
 			if (error) {
-				console.error('Resend menolak pengiriman:', error.name, error.message);
-				return fail(502, { message: 'Email gagal dikirim. Coba lagi nanti.' });
+				console.error('Resend Error:', error);
+				return fail(500, { message: 'Gagal mengirim email melalui Resend.' });
 			}
-		} catch (error) {
-			console.error('Gagal menghubungi Resend.', error);
-			return fail(502, { message: 'Gagal menghubungi layanan email. Coba lagi nanti.' });
-		}
 
-		return { success: true };
+			return { success: true };
+		} catch (err) {
+			console.error('Server Error:', err);
+			return fail(500, { message: 'Terjadi kesalahan pada server.' });
+		}
 	}
 };
