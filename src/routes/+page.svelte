@@ -7,6 +7,8 @@
 	type Theme = 'light' | 'dark';
 	type Status = 'idle' | 'loading' | 'success' | 'error';
 
+	const EMAIL = 'zhadiramadhan@gmail.com';
+
 	let theme: Theme = $state('dark');
 	let status: Status = $state('idle');
 	let mobileMenuOpen: boolean = $state(false);
@@ -15,15 +17,15 @@
 
 	// State untuk Filter Kategori Proyek
 	let selectedCategory: string = $state('Semua');
-	
-	// Ekstrak kategori unik dari data proyek (atau default)
 	const categories = ['Semua', 'Web', 'Mobile', 'Gim'];
 
 	// Filter proyek berdasarkan kategori
 	let filteredProjects = $derived(
-		selectedCategory === 'Semua' 
-			? projects 
-			: projects.filter(p => p.category?.toLowerCase() === selectedCategory.toLowerCase() || true) // Sesuaikan dengan struktur data proyek Anda
+		selectedCategory === 'Semua'
+			? projects
+			: projects.filter(
+					(p) => p.category?.toLowerCase() === selectedCategory.toLowerCase() || true
+				)
 	);
 
 	onMount(() => {
@@ -38,7 +40,7 @@
 
 	async function copyEmail() {
 		try {
-			await navigator.clipboard.writeText('zidnihadiramadhan@gmail.com');
+			await navigator.clipboard.writeText(EMAIL);
 			copied = true;
 			setTimeout(() => (copied = false), 2500);
 		} catch (err) {
@@ -103,24 +105,23 @@
 
 		<!-- Dropdown Menu Mobile -->
 		{#if mobileMenuOpen}
-			<nav class="flex flex-col border-t border-line bg-bg px-6 py-5 lg:hidden shadow-xl">
-				<a href="#proyek" onclick={() => mobileMenuOpen = false} class="py-3 text-base font-medium border-b border-line/50 hover:text-gold">Proyek</a>
-				<a href="#tentang" onclick={() => mobileMenuOpen = false} class="py-3 text-base font-medium border-b border-line/50 hover:text-sky">Tentang</a>
-				<a href="#keahlian" onclick={() => mobileMenuOpen = false} class="py-3 text-base font-medium border-b border-line/50 hover:text-gold">Keahlian</a>
-				<a href="#kontak" onclick={() => mobileMenuOpen = false} class="py-3 text-base font-medium hover:text-sky">Kontak</a>
+			<nav class="flex flex-col border-t border-line bg-bg px-6 py-5 shadow-xl lg:hidden">
+				<a href="#proyek" onclick={() => (mobileMenuOpen = false)} class="border-b border-line/50 py-3 text-base font-medium hover:text-gold">Proyek</a>
+				<a href="#tentang" onclick={() => (mobileMenuOpen = false)} class="border-b border-line/50 py-3 text-base font-medium hover:text-sky">Tentang</a>
+				<a href="#keahlian" onclick={() => (mobileMenuOpen = false)} class="border-b border-line/50 py-3 text-base font-medium hover:text-gold">Keahlian</a>
+				<a href="#kontak" onclick={() => (mobileMenuOpen = false)} class="py-3 text-base font-medium hover:text-sky">Kontak</a>
 			</nav>
 		{/if}
 	</header>
 
 	<!-- HERO SECTION -->
 	<section class="relative overflow-hidden">
-		<!-- Efek Cahaya Ambiens di Latar Belakang -->
 		<div class="pointer-events-none absolute top-10 left-1/4 h-[380px] w-[380px] rounded-full opacity-15 blur-[120px]" style="background: linear-gradient(135deg, #facc15, #38bdf8);"></div>
 
 		<div class="mx-auto max-w-[1440px] px-6 pt-16 pb-14 lg:px-24 lg:pt-[130px]">
 			<div class="mb-6 inline-flex items-center gap-2.5 border border-line bg-surface px-3.5 py-1.5 shadow-sm">
 				<span class="h-2 w-2 rounded-full bg-gold animate-ping"></span>
-				<span class="font-mono text-[11px] tracking-[1.2px] text-muted font-medium">
+				<span class="font-mono text-[11px] font-medium tracking-[1.2px] text-muted">
 					PPLG SMKN 8 SEMARANG · 2026
 				</span>
 			</div>
@@ -144,7 +145,7 @@
 					<button
 						type="button"
 						onclick={copyEmail}
-						class="flex h-13 items-center gap-2.5 border border-line bg-surface px-6 text-[15px] font-medium text-ink transition-colors hover:border-gold"
+						class="flex h-13 cursor-pointer items-center gap-2.5 border border-line bg-surface px-6 text-[15px] font-medium text-ink transition-colors hover:border-gold"
 					>
 						<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
 							<rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
@@ -187,20 +188,22 @@
 		<div class="mx-auto max-w-[1440px] px-6 pt-10 pb-16 lg:px-24 lg:pt-16 lg:pb-24">
 			<div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
 				<div>
-					<div class="flex items-center gap-2.5 mb-2">
+					<div class="mb-2 flex items-center gap-2.5">
 						<span class="h-2 w-2 bg-gold"></span>
-						<p class="font-mono text-[11px] tracking-[1.2px] text-gold font-bold">PORTOFOLIO KARYA</p>
+						<p class="font-mono text-[11px] font-bold tracking-[1.2px] text-gold">PORTOFOLIO KARYA</p>
 					</div>
 					<h2 class="text-3xl font-bold tracking-tight lg:text-4xl">Proyek Pilihan</h2>
 				</div>
 
-				<!-- Tombol Filter Kategori (Fitur Baru) -->
+				<!-- Tombol Filter Kategori -->
 				<div class="flex flex-wrap gap-2">
 					{#each categories as cat}
 						<button
 							type="button"
-							onclick={() => selectedCategory = cat}
-							class="cursor-pointer border px-4 py-2 font-mono text-[11px] tracking-wider transition-all {selectedCategory === cat ? 'border-gold bg-gold/10 text-gold font-bold' : 'border-line bg-surface text-muted hover:border-sky'}"
+							onclick={() => (selectedCategory = cat)}
+							class="cursor-pointer border px-4 py-2 font-mono text-[11px] tracking-wider transition-all {selectedCategory === cat
+								? 'border-gold bg-gold/10 font-bold text-gold'
+								: 'border-line bg-surface text-muted hover:border-sky'}"
 						>
 							{cat.toUpperCase()}
 						</button>
@@ -221,14 +224,13 @@
 	<!-- BAGIAN TENTANG & VIDEO PROFIL -->
 	<section id="tentang" class="border-t border-line bg-surface/30">
 		<div class="mx-auto max-w-[1440px] px-6 pt-10 pb-16 lg:px-24 lg:pt-16 lg:pb-24">
-			<div class="flex items-center gap-2.5 mb-2">
+			<div class="mb-2 flex items-center gap-2.5">
 				<span class="h-2 w-2 bg-sky"></span>
-				<p class="font-mono text-[11px] tracking-[1.2px] text-sky font-bold">MENGENAL LEBIH DEKAT</p>
+				<p class="font-mono text-[11px] font-bold tracking-[1.2px] text-sky">MENGENAL LEBIH DEKAT</p>
 			</div>
-			<h2 class="text-3xl font-bold tracking-tight lg:text-4xl mb-10">Tentang Saya</h2>
+			<h2 class="mb-10 text-3xl font-bold tracking-tight lg:text-4xl">Tentang Saya</h2>
 
 			<div class="flex flex-col items-start gap-10 lg:flex-row lg:gap-20">
-				<!-- Bingkai Video Profil -->
 				<div class="w-full bg-gradient-gold-sky p-[2px] shadow-lg lg:w-[424px] lg:shrink-0">
 					<!-- svelte-ignore a11y_media_has_caption -->
 					<video
@@ -258,10 +260,10 @@
 					</div>
 
 					<div id="keahlian" class="flex flex-col gap-3">
-						<span class="font-mono text-[11px] tracking-[1.2px] text-gold font-bold">KEAHLIAN & TEKNOLOGI UTAMA</span>
+						<span class="font-mono text-[11px] font-bold tracking-[1.2px] text-gold">KEAHLIAN & TEKNOLOGI UTAMA</span>
 						<div class="flex flex-wrap gap-2.5">
 							{#each profile.skills as skill}
-								<span class="border border-line bg-bg px-3.5 py-2 font-mono text-[11px] tracking-[1.1px] text-ink transition-colors hover:border-gold hover:text-gold shadow-xs">
+								<span class="border border-line bg-bg px-3.5 py-2 font-mono text-[11px] tracking-[1.1px] text-ink shadow-xs transition-colors hover:border-gold hover:text-gold">
 									{skill}
 								</span>
 							{/each}
@@ -275,21 +277,21 @@
 	<!-- BAGIAN KONTAK & FORMULIR -->
 	<section id="kontak" class="border-t border-line">
 		<div class="mx-auto max-w-[1440px] px-6 pt-10 pb-16 lg:px-24 lg:pt-16 lg:pb-24">
-			<div class="flex items-center gap-2.5 mb-2">
+			<div class="mb-2 flex items-center gap-2.5">
 				<span class="h-2 w-2 bg-gold"></span>
-				<p class="font-mono text-[11px] tracking-[1.2px] text-gold font-bold">MARI TERHUBUNG</p>
+				<p class="font-mono text-[11px] font-bold tracking-[1.2px] text-gold">MARI TERHUBUNG</p>
 			</div>
 
 			<div class="mt-8 flex flex-col gap-12 lg:flex-row lg:justify-between lg:gap-24">
-				<div class="flex flex-col gap-5 max-w-[480px]">
+				<div class="flex max-w-[480px] flex-col gap-5">
 					<h2 class="text-3xl font-bold tracking-tight lg:text-4xl">
 						Punya proyek menarik atau ingin berdiskusi?
 					</h2>
 					<p class="text-[17px] leading-[1.7] text-muted">
 						Kirimkan pesan melalui formulir di samping, atau hubungi langsung via email institusi dan pribadi. Saya akan merespon secepatnya.
 					</p>
-					<div class="pt-4 flex flex-col gap-2 font-mono text-xs text-sky">
-						<p>📧 zidnihadiramadhan@gmail.com</p>
+					<div class="flex flex-col gap-2 pt-4 font-mono text-xs text-sky">
+						<p>📧 {EMAIL}</p>
 						<p>📍 Semarang, Jawa Tengah, Indonesia</p>
 					</div>
 				</div>
@@ -309,10 +311,10 @@
 							}
 						};
 					}}
-					class="flex w-full flex-col gap-5 border border-line bg-surface/50 p-6 lg:w-[480px] lg:shrink-0 shadow-lg"
+					class="flex w-full flex-col gap-5 border border-line bg-surface/50 p-6 shadow-lg lg:w-[480px] lg:shrink-0"
 				>
 					<label class="flex flex-col gap-2">
-						<span class="font-mono text-[11px] tracking-[1.1px] text-muted font-bold">NAMA LENGKAP</span>
+						<span class="font-mono text-[11px] font-bold tracking-[1.1px] text-muted">NAMA LENGKAP</span>
 						<input
 							name="nama"
 							required
@@ -323,7 +325,7 @@
 					</label>
 
 					<label class="flex flex-col gap-2">
-						<span class="font-mono text-[11px] tracking-[1.1px] text-muted font-bold">ALAMAT EMAIL</span>
+						<span class="font-mono text-[11px] font-bold tracking-[1.1px] text-muted">ALAMAT EMAIL</span>
 						<input
 							name="email"
 							type="email"
@@ -335,7 +337,7 @@
 					</label>
 
 					<label class="flex flex-col gap-2">
-						<span class="font-mono text-[11px] tracking-[1.1px] text-muted font-bold">PESAN ANDA</span>
+						<span class="font-mono text-[11px] font-bold tracking-[1.1px] text-muted">PESAN ANDA</span>
 						<textarea
 							name="pesan"
 							required
@@ -348,7 +350,9 @@
 					<button
 						type="submit"
 						disabled={status === 'loading'}
-						class="flex h-13 cursor-pointer items-center justify-center gap-2 px-6 text-[15px] font-bold transition-all {status === 'loading' ? 'border border-line bg-surface text-muted' : 'bg-gradient-btn shadow-md'}"
+						class="flex h-13 cursor-pointer items-center justify-center gap-2 px-6 text-[15px] font-bold transition-all {status === 'loading'
+							? 'border border-line bg-surface text-muted'
+							: 'bg-gradient-btn shadow-md'}"
 					>
 						{#if status === 'loading'}
 							<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="animate-spin">
@@ -391,13 +395,13 @@
 			</div>
 
 			<div class="flex flex-col items-start gap-6 border-t border-line pt-8 lg:flex-row lg:items-center lg:justify-between">
-				<a href="mailto:zidnihadiramadhan@gmail.com" class="font-mono text-xs tracking-[1.2px] text-sky hover:text-gold transition-colors">
-					zidnihadiramadhan@gmail.com
+				<a href="mailto:{EMAIL}" class="font-mono text-xs tracking-[1.2px] text-sky transition-colors hover:text-gold">
+					{EMAIL}
 				</a>
 				<div class="flex items-center gap-8">
 					<a href="#proyek" class="font-mono text-[11px] tracking-[1.2px] text-muted hover:text-ink">PROYEK</a>
-					<a href="https://github.com/zidnihr" target="_blank" rel="noopener noreferrer" class="font-mono text-[11px] tracking-[1.2px] text-muted hover:text-ink">GITHUB</a>
-					<a href="#kontak" class="font-mono text-[11px] tracking-[1.2px] text-muted hover:text-ink">KONTAK</a>
+					<a href="https://github.com/Z3T3N" target="_blank" rel="noopener noreferrer" class="font-mono text-[11px] tracking-[1.2px] text-muted hover:text-ink">GITHUB</a>
+					<a href="mailto:{EMAIL}" class="font-mono text-[11px] tracking-[1.2px] text-muted hover:text-ink">EMAIL</a>
 				</div>
 			</div>
 		</div>
