@@ -38,7 +38,7 @@
 
 	async function copyEmail() {
 		try {
-			await navigator.clipboard.writeText('zidnihadiramadhan@gmail.com');
+			await navigator.clipboard.writeText('zhadiramadhan@gmail.com');
 			copied = true;
 			setTimeout(() => (copied = false), 2500);
 		} catch (err) {
@@ -391,8 +391,8 @@
 			</div>
 
 			<div class="flex flex-col items-start gap-6 border-t border-line pt-8 lg:flex-row lg:items-center lg:justify-between">
-				<a href="mailto:zidnihadiramadhan@gmail.com" class="font-mono text-xs tracking-[1.2px] text-sky hover:text-gold transition-colors">
-					zidnihadiramadhan@gmail.com
+				<a href="mailto:zhadiramadhan@gmail.com" class="font-mono text-xs tracking-[1.2px] text-sky hover:text-gold transition-colors">
+					zhadiramadhan@gmail.com
 				</a>
 				<div class="flex items-center gap-8">
 					<a href="#proyek" class="font-mono text-[11px] tracking-[1.2px] text-muted hover:text-ink">PROYEK</a>
