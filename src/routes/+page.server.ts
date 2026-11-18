@@ -1,9 +1,9 @@
 import { fail } from '@sveltejs/kit';
+import { env } from '$env/dynamic/private';
 import type { Actions } from './$types';
 import { Resend } from 'resend';
 
-// Ganti dengan API Key Resend kamu (diawali 're_...')
-const resend = new Resend('re_KODE_API_KEY_RESEND_KAMU_DISINI');
+const resend = new Resend(env.RESEND_API_KEY);
 
 export const actions: Actions = {
 	kirim: async ({ request }) => {
