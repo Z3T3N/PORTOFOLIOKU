@@ -1,9 +1,7 @@
 import { fail } from '@sveltejs/kit';
-import { env } from '$env/dynamic/private';
+import { RESEND_API_KEY, RESEND_TO } from '$app/env/private';
 import type { Actions } from './$types';
 import { Resend } from 'resend';
-
-const resend = new Resend(env.RESEND_API_KEY);
 
 export const actions: Actions = {
 	kirim: async ({ request }) => {
@@ -20,10 +18,15 @@ export const actions: Actions = {
 			return fail(400, { message: 'Format email tidak valid.' });
 		}
 
+		if (!RESEND_API_KEY || !RESEND_TO) {
+			return fail(500, { message: 'Konfigurasi Resend belum dipasang di server.' });
+		}
+
 		try {
+			const resend = new Resend(RESEND_API_KEY);
 			const { error } = await resend.emails.send({
 				from: 'Portofolio Zidni <onboarding@resend.dev>',
-				to: ['zhadiramadhan@gmail.com'],
+				to: [RESEND_TO],
 				subject: `Pesan Baru dari Portofolio: ${nama}`,
 				replyTo: email,
 				html: `
